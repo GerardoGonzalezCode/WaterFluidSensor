@@ -94,16 +94,13 @@ void loop() {
   Serial.print (volumen,3); 
   Serial.println (" L");
 
-  const size_t CAPACITY = JSON_OBJECT_SIZE(5);
+  const size_t CAPACITY = JSON_OBJECT_SIZE(2);
   StaticJsonDocument<CAPACITY> doc;
   JsonObject object = doc.to<JsonObject>();
-  object["Id"] = disId;
-  object["GroundHumidity"] = gh;
-  object["EnvironmentHumidity"] = h;
-  object["Temperature"] = t;
-  object["Lighting"] = lux;
+  object["Caudal: "] = (caudal_L_m,3);
+  object["L/min: "] = (volumen,3)+"L";
   serializeJson(doc, jsonOutput);
   Serial.println(String(jsonOutput));
-  client.publish( "/nodejs/mqtt/ifarm", jsonOutput);
+  client.publish( "/nodejs/mqtt/pap", jsonOutput);
   delay(5000);
 }
